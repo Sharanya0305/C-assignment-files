@@ -1,0 +1,79 @@
+Assignment – 1
+
+Student Records System (Structures + Arrays + Functions). Design a Student Records System using structures and functions.
+
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STUDENTS 100
+#define SUBJECTS 5
+
+// Define the Student structure
+struct Student {
+    int id;
+    char name[50];
+    int marks[SUBJECTS];
+    float average;
+};
+
+// Function to input student details
+void inputStudents(struct Student s[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("\nEnter details for Student %d:\n", i + 1);
+        printf("ID: ");
+        scanf("%d", &s[i].id);
+        printf("Name: ");
+        scanf(" %[^\n]", s[i].name);  // To read full name with spaces
+
+        printf("Enter marks in %d subjects:\n", SUBJECTS);
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("Subject %d: ", j + 1);
+            scanf("%d", &s[i].marks[j]);
+        }
+    }
+}
+
+// Function to calculate average of each student
+void calculateAverage(struct Student *s) {
+    int sum = 0;
+    for (int i = 0; i < SUBJECTS; i++) {
+        sum += s->marks[i];
+    }
+    s->average = sum / (float)SUBJECTS;
+}
+
+// Function to display topper student
+void displayTopper(struct Student s[], int n) {
+    int topperIndex = 0;
+    float highestAvg = s[0].average;
+
+    for (int i = 1; i < n; i++) {
+        if (s[i].average > highestAvg) {
+            highestAvg = s[i].average;
+            topperIndex = i;
+        }
+    }
+
+    printf("\nTopper Student:\n");
+    printf("ID: %d\n", s[topperIndex].id);
+    printf("Name: %s\n", s[topperIndex].name);
+    printf("Average Marks: %.2f\n", s[topperIndex].average);
+}
+
+int main() {
+    int n = 5;
+    struct Student students[MAX_STUDENTS];
+
+    // Input students
+    inputStudents(students, n);
+
+    // Calculate average for each student
+    for (int i = 0; i < n; i++) {
+        calculateAverage(&students[i]);
+    }
+
+    // Display the topper
+    displayTopper(students, n);
+
+    return 0;
+}
